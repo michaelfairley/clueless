@@ -20,7 +20,7 @@ public class LD28 implements ApplicationListener {
     OrthographicCamera camera;
     World world;
     private Box2DDebugRenderer debugRenderer;
-    private Body body;
+    private Player player;
 
     @Override
     public void create () {
@@ -31,40 +31,22 @@ public class LD28 implements ApplicationListener {
         world = new World(new Vector2(0, 0), true);
         debugRenderer = new Box2DDebugRenderer();
 
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(6, 6);
-        bodyDef.linearDamping = 4f;
-        bodyDef.fixedRotation = true;
-        body = world.createBody(bodyDef);
-
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(1, 1);
-
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = shape;
-        fixtureDef.density = 1f;
-        fixtureDef.restitution = 0.2f;
-
-        Fixture fixture = body.createFixture(fixtureDef);
-
-        shape.dispose();
+        player = new Player(world);
 
         ChainShape chain = new ChainShape();
-        float[] wall = new float[]{
-                10, 0,
-                10, 10,
-                0, 10,
-                0, 20,
-                -10, 20,
-                -10, 10,
-                -10, 0,
-                0, 0,
-                0, -10,
-                10, -10,
-                10, 0,
+        Vector2[] wall = new Vector2[]{
+                new Vector2(10, 0),
+                new Vector2(10, 10),
+                new Vector2(0, 10),
+                new Vector2(0, 20),
+                new Vector2(-10, 20),
+                new Vector2(-10, 10),
+                new Vector2(-10, 0),
+                new Vector2(0, 0),
+                new Vector2(0, -10),
+                new Vector2(10, -10),
         };
-        chain.createChain(wall);
+        chain.createLoop(wall);
 
         BodyDef wallDef = new BodyDef();
         wallDef.type = BodyDef.BodyType.StaticBody;
@@ -87,33 +69,16 @@ public class LD28 implements ApplicationListener {
         camera.update();
         debugRenderer.render(world, camera.combined);
         update();
-        camera.translate(body.getPosition().x - camera.position.x, body.getPosition().y - camera.position.y);
+        camera.translate(player.body.getPosition().x - camera.position.x, player.body.getPosition().y - camera.position.y);
     }
 
     private void update() {
         world.step(1/60f, 6, 2);
-
-        Vector2 vel = body.getLinearVelocity();
-        Vector2 pos = body.getPosition();
-
-        float maxVelocity = 10f;
-        float impulse = 3f;
-
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && vel.x < maxVelocity) {
-            body.applyLinearImpulse(impulse, 0, pos.x, pos.y, true);
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && vel.x > -maxVelocity) {
-            body.applyLinearImpulse(-impulse, 0, pos.x, pos.y, true);
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.UP) && vel.y < maxVelocity) {
-            body.applyLinearImpulse(0, impulse, pos.x, pos.y, true);
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && vel.y > -maxVelocity) {
-            body.applyLinearImpulse(0, -impulse, pos.x, pos.y, true);
-        }
+        
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) player.moveRight();
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) player.moveLeft();
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) player.moveUp();
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) player.moveDown();
     }
 
     @Override
