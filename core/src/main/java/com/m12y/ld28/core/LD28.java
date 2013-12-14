@@ -33,7 +33,7 @@ public class LD28 implements ApplicationListener {
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(2, 2);
+        bodyDef.position.set(6, 6);
         bodyDef.linearDamping = 4f;
         bodyDef.fixedRotation = true;
         body = world.createBody(bodyDef);
@@ -50,16 +50,29 @@ public class LD28 implements ApplicationListener {
 
         shape.dispose();
 
-        EdgeShape edge = new EdgeShape();
-        edge.set(7, 1, 7, 6);
+        ChainShape chain = new ChainShape();
+        float[] wall = new float[]{
+                10, 0,
+                10, 10,
+                0, 10,
+                0, 20,
+                -10, 20,
+                -10, 10,
+                -10, 0,
+                0, 0,
+                0, -10,
+                10, -10,
+                10, 0,
+        };
+        chain.createChain(wall);
 
         BodyDef wallDef = new BodyDef();
         wallDef.type = BodyDef.BodyType.StaticBody;
         Body wallBody = world.createBody(wallDef);
 
-        wallBody.createFixture(edge, 0);
+        wallBody.createFixture(chain, 0);
 
-        edge.dispose();
+        chain.dispose();
     }
 
     @Override
@@ -74,6 +87,7 @@ public class LD28 implements ApplicationListener {
         camera.update();
         debugRenderer.render(world, camera.combined);
         update();
+        camera.translate(body.getPosition().x - camera.position.x, body.getPosition().y - camera.position.y);
     }
 
     private void update() {
@@ -83,21 +97,22 @@ public class LD28 implements ApplicationListener {
         Vector2 pos = body.getPosition();
 
         float maxVelocity = 10f;
+        float impulse = 3f;
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && vel.x < maxVelocity) {
-            body.applyLinearImpulse(1f, 0, pos.x, pos.y, true);
+            body.applyLinearImpulse(impulse, 0, pos.x, pos.y, true);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && vel.x > -maxVelocity) {
-            body.applyLinearImpulse(-1f, 0, pos.x, pos.y, true);
+            body.applyLinearImpulse(-impulse, 0, pos.x, pos.y, true);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.UP) && vel.y < maxVelocity) {
-            body.applyLinearImpulse(0, 1f, pos.x, pos.y, true);
+            body.applyLinearImpulse(0, impulse, pos.x, pos.y, true);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && vel.y > -maxVelocity) {
-            body.applyLinearImpulse(0, -1f, pos.x, pos.y, true);
+            body.applyLinearImpulse(0, -impulse, pos.x, pos.y, true);
         }
     }
 
