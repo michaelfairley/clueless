@@ -7,13 +7,13 @@ import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
 
 public class LD28Html extends GwtApplication {
-	@Override
-	public ApplicationListener getApplicationListener () {
-		return new LD28();
-	}
-	
-	@Override
-	public GwtApplicationConfiguration getConfig () {
-		return new GwtApplicationConfiguration(480, 320);
-	}
+    @Override
+    public ApplicationListener getApplicationListener () {
+        return new LD28();
+    }
+
+    @Override
+    public GwtApplicationConfiguration getConfig () {
+        return new GwtApplicationConfiguration(LD28.WIDTH, LD28.HEIGHT);
+    }
 }
