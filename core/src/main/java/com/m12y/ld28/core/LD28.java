@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -30,8 +31,8 @@ public class LD28 implements ApplicationListener {
     OrthographicCamera camera;
     World world;
     private Box2DDebugRenderer debugRenderer;
-    private Player player;
-    private Array<AI> ais;
+    Player player;
+    Array<AI> ais;
     OrthogonalTiledMapRenderer renderer;
     Array<Vector2> waypoints;
 
@@ -64,7 +65,8 @@ public class LD28 implements ApplicationListener {
         MapLayer waypointLayer = map.getLayers().get(1);
 
         waypoints = new Array<Vector2>(false, wallLayer.getObjects().getCount());
-        for (RectangleMapObject waypointRect : waypointLayer.getObjects().getByType(RectangleMapObject.class)) {
+        for (MapObject obj : waypointLayer.getObjects()) {
+            RectangleMapObject waypointRect = (RectangleMapObject) obj;
             waypoints.add(waypointRect.getRectangle().getCenter(new Vector2()).div(64.0f));
         }
 
@@ -75,7 +77,7 @@ public class LD28 implements ApplicationListener {
         ais = new Array<AI>(false, aiCount);
 
         for (int i = 0; i < aiCount; i++) {
-            ais.add(new AI(startingWaypoints.pop()));
+            ais.add(new AI(startingWaypoints.pop(), true));
         }
 
         renderer = new OrthogonalTiledMapRenderer(map, 1/64f);
@@ -87,6 +89,8 @@ public class LD28 implements ApplicationListener {
 
     @Override
     public void render () {
+        if (Gdx.input.isKeyPressed(Input.Keys.R)) create();
+
         elapsed += Gdx.graphics.getDeltaTime();
         Gdx.gl.glClearColor(1, 1, 1, 0);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
@@ -110,7 +114,7 @@ public class LD28 implements ApplicationListener {
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN))  player.moveDown();
         if (Gdx.input.isKeyPressed(Input.Keys.S))     player.moveDown();
 
-        for(AI ai : ais) ai.update();
+        for(AI ai : new Array.ArrayIterator<AI>(ais)) ai.update();
     }
 
     @Override
