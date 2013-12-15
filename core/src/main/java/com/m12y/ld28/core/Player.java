@@ -13,7 +13,7 @@ public class Player {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(6, 6);
-        bodyDef.linearDamping = 4f;
+        bodyDef.linearDamping = 6f;
         bodyDef.fixedRotation = true;
         body = world.createBody(bodyDef);
 
