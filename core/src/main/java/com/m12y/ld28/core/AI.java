@@ -9,7 +9,7 @@ public class AI {
     Body body;
     static float velocity = 3.5f;
     private Vector2 waypoint;
-    private boolean killer;
+    boolean killer;
     static float seeRadius = 10f;
     static float killRadius = 3f;
     boolean dead = false;
@@ -31,6 +31,7 @@ public class AI {
 
         Fixture fixture = body.createFixture(shape, 1f);
         fixture.setRestitution(1f);
+        fixture.setSensor(true);
 
         shape.dispose();
 

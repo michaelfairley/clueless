@@ -56,4 +56,23 @@ public class Player {
 
         body.applyLinearImpulse(0, -impulse, pos().x, pos().y, true);
     }
+
+    public void arrest() {
+        Vector2 position = body.getPosition();
+
+        AI closest = LD28.instance.ais.first();
+
+        for(AI ai : LD28.instance.ais) {
+            if (ai.dead) continue;
+            if(ai.body.getPosition().dst(position) < closest.body.getPosition().dst(position)) {
+                closest = ai;
+            }
+        }
+
+        if (closest.killer) {
+            System.out.println("Yay! You win!");
+        } else {
+            System.out.println("You got the wrong guy!");
+        }
+    }
 }

@@ -77,7 +77,7 @@ public class LD28 implements ApplicationListener {
         ais = new Array<AI>(false, aiCount);
 
         for (int i = 0; i < aiCount; i++) {
-            ais.add(new AI(startingWaypoints.pop(), true));
+            ais.add(new AI(startingWaypoints.pop(), i == 0));
         }
 
         renderer = new OrthogonalTiledMapRenderer(map, 1/64f);
@@ -113,6 +113,8 @@ public class LD28 implements ApplicationListener {
         if (Gdx.input.isKeyPressed(Input.Keys.W))     player.moveUp();
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN))  player.moveDown();
         if (Gdx.input.isKeyPressed(Input.Keys.S))     player.moveDown();
+
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) player.arrest();
 
         for(AI ai : new Array.ArrayIterator<AI>(ais)) ai.update();
     }
