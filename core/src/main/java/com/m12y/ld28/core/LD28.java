@@ -32,7 +32,6 @@ public class LD28 implements ApplicationListener {
 
     @Override
     public void create () {
-        texture = new Texture(Gdx.files.internal("libgdx-logo.png"));
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 16, 12);
