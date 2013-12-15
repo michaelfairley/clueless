@@ -9,29 +9,36 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 
 public class LD28 implements ApplicationListener {
     public static final int WIDTH = 1024;
     public static final int HEIGHT = 768;
 
-    Texture texture;
+    static LD28 instance;
+
     SpriteBatch batch;
     float elapsed;
     OrthographicCamera camera;
-    static World world;
+    World world;
     private Box2DDebugRenderer debugRenderer;
     private Player player;
-    private AI ai;
+    private Array<AI> ais;
     OrthogonalTiledMapRenderer renderer;
+    Array<Vector2> waypoints;
 
     @Override
     public void create () {
+        instance = this;
+
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 16, 12);
@@ -42,15 +49,33 @@ public class LD28 implements ApplicationListener {
 
         TiledMap map = new TmxMapLoader().load("tiles/tiled.tmx");
 
-        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
+        TiledMapTileLayer wallLayer = (TiledMapTileLayer) map.getLayers().get(0);
 
-        for(int x = 0; x < layer.getWidth(); x++) {
-            for(int y = 0; y < layer.getHeight(); y++) {
-                TiledMapTileLayer.Cell cell = layer.getCell(x, y);
+
+        for(int x = 0; x < wallLayer.getWidth(); x++) {
+            for(int y = 0; y < wallLayer.getHeight(); y++) {
+                TiledMapTileLayer.Cell cell = wallLayer.getCell(x, y);
                 if (cell == null) continue;
 
                 new Wall(x, y, cell.getTile().getId());
             }
+        }
+
+        MapLayer waypointLayer = map.getLayers().get(1);
+
+        waypoints = new Array<Vector2>(false, wallLayer.getObjects().getCount());
+        for (RectangleMapObject waypointRect : waypointLayer.getObjects().getByType(RectangleMapObject.class)) {
+            waypoints.add(waypointRect.getRectangle().getCenter(new Vector2()).div(64.0f));
+        }
+
+        Array<Vector2> startingWaypoints = new Array<Vector2>(waypoints);
+        startingWaypoints.shuffle();
+
+        int aiCount = 10;
+        ais = new Array<AI>(false, aiCount);
+
+        for (int i = 0; i < aiCount; i++) {
+            ais.add(new AI(startingWaypoints.pop()));
         }
 
         renderer = new OrthogonalTiledMapRenderer(map, 1/64f);
@@ -85,7 +110,7 @@ public class LD28 implements ApplicationListener {
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN))  player.moveDown();
         if (Gdx.input.isKeyPressed(Input.Keys.S))     player.moveDown();
 
-//        ai.update();
+        for(AI ai : ais) ai.update();
     }
 
     @Override

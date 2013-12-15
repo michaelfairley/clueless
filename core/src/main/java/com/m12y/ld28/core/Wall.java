@@ -123,7 +123,7 @@ public class Wall {
         if (chain != null) {
             BodyDef wallDef = new BodyDef();
             wallDef.type = BodyDef.BodyType.StaticBody;
-            Body wallBody = LD28.world.createBody(wallDef);
+            Body wallBody = LD28.instance.world.createBody(wallDef);
 
             wallBody.createFixture(chain, 0);
 
