@@ -24,7 +24,7 @@ public class AI {
         bodyDef.position.set(startingWaypoint.x, startingWaypoint.y);
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 1f;
-        body = LD28.instance.world.createBody(bodyDef);
+        body = GameScreen.instance.world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(0.5f, 0.5f);
@@ -53,9 +53,9 @@ public class AI {
 
         Vector2 position = body.getPosition();
 
-        if (LD28.instance.player.body.getPosition().dst(position) < seeRadius) seeable++;
+        if (GameScreen.instance.player.body.getPosition().dst(position) < seeRadius) seeable++;
 
-        for (AI ai : LD28.instance.ais) {
+        for (AI ai : GameScreen.instance.ais) {
             if (ai == this) continue;
             if (ai.dead) continue;
             Vector2 aiPosition = ai.body.getPosition();
@@ -77,9 +77,9 @@ public class AI {
 
     private void pickNextWaypoint() {
         final Vector2 position = body.getPosition();
-        LD28.instance.waypoints.shuffle();
+        GameScreen.instance.waypoints.shuffle();
 
-        Iterable<Vector2> nearby = LD28.instance.waypoints.select(new Predicate<Vector2>() {
+        Iterable<Vector2> nearby = GameScreen.instance.waypoints.select(new Predicate<Vector2>() {
             @Override
             public boolean evaluate(Vector2 candidate) {
                 float distance = candidate.dst(position);

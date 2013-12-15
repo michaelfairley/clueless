@@ -9,7 +9,7 @@ namespace com.m12y.ld28
 {
 	[Register ("AppDelegate")]
 	public partial class AppDelegate : IOSApplication {
-		public AppDelegate () : base(new LD28(), createConfig()) {}
+		public AppDelegate () : base(new Clueless(), createConfig()) {}
 
 		internal static IOSApplicationConfiguration createConfig () {
 			IOSApplicationConfiguration config = new IOSApplicationConfiguration();

@@ -60,9 +60,9 @@ public class Player {
     public void arrest() {
         Vector2 position = body.getPosition();
 
-        AI closest = LD28.instance.ais.first();
+        AI closest = GameScreen.instance.ais.first();
 
-        for(AI ai : LD28.instance.ais) {
+        for(AI ai : GameScreen.instance.ais) {
             if (ai.dead) continue;
             if(ai.body.getPosition().dst(position) < closest.body.getPosition().dst(position)) {
                 closest = ai;

@@ -1,13 +1,10 @@
 package com.m12y.ld28.core;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
@@ -20,11 +17,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 
-public class LD28 implements ApplicationListener {
-    public static final int WIDTH = 1024;
-    public static final int HEIGHT = 768;
-
-    static LD28 instance;
+public class GameScreen implements Screen {
+    static GameScreen instance;
 
     SpriteBatch batch;
     float elapsed;
@@ -36,8 +30,7 @@ public class LD28 implements ApplicationListener {
     OrthogonalTiledMapRenderer renderer;
     Array<Vector2> waypoints;
 
-    @Override
-    public void create () {
+    public GameScreen() {
         instance = this;
 
         batch = new SpriteBatch();
@@ -88,10 +81,8 @@ public class LD28 implements ApplicationListener {
     }
 
     @Override
-    public void render () {
-        if (Gdx.input.isKeyPressed(Input.Keys.R)) create();
+    public void render (float delta) {
 
-        elapsed += Gdx.graphics.getDeltaTime();
         Gdx.gl.glClearColor(1, 1, 1, 0);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         camera.update();
@@ -129,5 +120,13 @@ public class LD28 implements ApplicationListener {
 
     @Override
     public void dispose () {
+    }
+
+    @Override
+    public void show() {
+    }
+
+    @Override
+    public void hide() {
     }
 }
