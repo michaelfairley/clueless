@@ -1,5 +1,7 @@
 package com.m12y.ld28.core;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
@@ -8,6 +10,7 @@ public class Player {
 
     private static float maxVelocity = 10f;
     private static float impulse = 1.5f;
+    static float halfSize = 0.5f;
 
     public Player(World world) {
         BodyDef bodyDef = new BodyDef();
@@ -18,7 +21,7 @@ public class Player {
         body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(0.5f, 0.5f);
+        shape.setAsBox(halfSize, halfSize);
 
         body.createFixture(shape, 0);
 
@@ -74,5 +77,21 @@ public class Player {
         } else {
             System.out.println("You got the wrong guy!");
         }
+    }
+
+    public void render(ShapeRenderer shapeRenderer) {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.BLACK);
+
+        Vector2 center = body.getPosition();
+
+        shapeRenderer.rect(
+                center.x - halfSize,
+                center.y - halfSize,
+                halfSize * 2,
+                halfSize * 2
+        );
+
+        shapeRenderer.end();
     }
 }

@@ -1,5 +1,8 @@
 package com.m12y.ld28.core;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
@@ -13,6 +16,19 @@ public class AI {
     static float seeRadius = 10f;
     static float killRadius = 3f;
     boolean dead = false;
+    static float halfSize = 0.5f;
+    Color color;
+
+    static Color[] COLORS = new Color[]{
+            Color.BLUE,
+            Color.CYAN,
+            Color.GREEN,
+            Color.MAGENTA,
+            Color.ORANGE,
+            Color.PINK,
+            Color.RED,
+            Color.YELLOW,
+    };
 
     public AI(Vector2 startingWaypoint) {
         this(startingWaypoint, false);
@@ -27,7 +43,7 @@ public class AI {
         body = GameScreen.instance.world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(0.5f, 0.5f);
+        shape.setAsBox(halfSize, halfSize);
 
         Fixture fixture = body.createFixture(shape, 1f);
         fixture.setRestitution(1f);
@@ -37,6 +53,8 @@ public class AI {
 
         waypoint = startingWaypoint;
         this.killer = killer;
+
+        color = COLORS[MathUtils.random(COLORS.length-1)];
     }
     public void update() {
         if (dead) return;
@@ -92,5 +110,21 @@ public class AI {
 
     private boolean isAtWaypoint() {
         return waypoint.dst(body.getPosition()) < 0.1;
+    }
+
+    public void render(ShapeRenderer shapeRenderer) {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(color);
+
+        Vector2 center = body.getPosition();
+
+        shapeRenderer.rect(
+                center.x - halfSize,
+                center.y - halfSize,
+                halfSize * 2,
+                halfSize * 2
+        );
+
+        shapeRenderer.end();
     }
 }
