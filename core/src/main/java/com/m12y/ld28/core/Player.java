@@ -1,5 +1,6 @@
 package com.m12y.ld28.core;
 
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -62,20 +63,29 @@ public class Player {
 
     public void arrest() {
         Vector2 position = body.getPosition();
+        int deathCount = 0;
 
         AI closest = GameScreen.instance.ais.first();
 
         for(AI ai : GameScreen.instance.ais) {
-            if (ai.dead) continue;
-            if(ai.body.getPosition().dst(position) < closest.body.getPosition().dst(position)) {
+            if (ai.dead) {
+                deathCount++;
+            } else if(ai.body.getPosition().dst(position) < closest.body.getPosition().dst(position)) {
                 closest = ai;
             }
         }
 
+        String people = deathCount == 1 ? "person" : "people";
+
         if (closest.killer) {
-            System.out.println("Yay! You win!");
+            Screen deaths = new TextScreen("Only " + deathCount + " " + people + " died!", closest.color, null);
+            Screen winner = new TextScreen("You caught the killer!", closest.color, deaths);
+
+            Clueless.instance.setScreen(winner);
         } else {
-            System.out.println("You got the wrong guy!");
+            Screen deaths = new TextScreen(Integer.toString(deathCount) + " " + people + " died!", closest.color, null);
+            Screen wrong = new TextScreen("You got the wrong guy!", closest.color, deaths);
+            Clueless.instance.setScreen(wrong);
         }
     }
 

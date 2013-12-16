@@ -1,6 +1,7 @@
 package com.m12y.ld28.core;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -85,8 +86,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render (float delta) {
-
-        Gdx.gl.glClearColor(0.9f, 0.9f, 0.9f, 0);
+        Gdx.gl.glClearColor(0.95f, 0.95f, 0.95f, 0);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         camera.update();
         camera.translate(player.body.getPosition().x - camera.position.x, player.body.getPosition().y - camera.position.y);
@@ -111,8 +111,6 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN))  player.moveDown();
         if (Gdx.input.isKeyPressed(Input.Keys.S))     player.moveDown();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) player.arrest();
-
         for(AI ai : new Array.ArrayIterator<AI>(ais)) ai.update();
     }
 
@@ -130,6 +128,52 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(new InputProcessor() {
+            @Override
+            public boolean keyDown(int keycode) {
+                return false;
+            }
+
+            @Override
+            public boolean keyUp(int keycode) {
+                if (keycode == Input.Keys.SPACE) {
+                    player.arrest();
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            @Override
+            public boolean keyTyped(char character) {
+                return false;
+            }
+
+            @Override
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                return false;
+            }
+
+            @Override
+            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                return false;
+            }
+
+            @Override
+            public boolean touchDragged(int screenX, int screenY, int pointer) {
+                return false;
+            }
+
+            @Override
+            public boolean mouseMoved(int screenX, int screenY) {
+                return false;
+            }
+
+            @Override
+            public boolean scrolled(int amount) {
+                return false;
+            }
+        });
     }
 
     @Override
