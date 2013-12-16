@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 public class Clueless extends Game {
     public static final int WIDTH = 1024;
-    public static final int HEIGHT = 700;
+    public static final int HEIGHT = 672;
 
     BitmapFont font;
 
