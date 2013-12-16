@@ -16,7 +16,7 @@ public class Player {
     public Player(World world) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(6, 6);
+        bodyDef.position.set(6, 16);
         bodyDef.linearDamping = 6f;
         bodyDef.fixedRotation = true;
         body = world.createBody(bodyDef);

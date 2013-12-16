@@ -25,11 +25,12 @@ public class Clueless extends Game {
 
         instance = this;
 
-        Screen go = new TextScreen("Party time!", null, new GameScreen());
+        Screen game = new GameScreen();
+        Screen go = new TextScreen("Party time!", null, game);
         Screen reset = new TextScreen("Press R at any time to start over", null, go);
         Screen space = new TextScreen("Press space to make the arrest", null, reset);
         Screen arrows = new TextScreen("Move with WASD or the arrow keys", null, space);
-//        Screen graphics = new TextScreen("(The graphics in this game are really not good)", Color.ORANGE, arrows);
+//        Screen graphics = new TextScreen("His motive?", Color.ORANGE, arrows);
         Screen arrest = new TextScreen("And then arrest them", Color.GREEN, arrows);
         Screen mission = new TextScreen("Your goal is to figure out who the killer is...", Color.WHITE, arrest);
         Screen strike = new TextScreen("The killer will strike", Color.YELLOW, mission);

@@ -11,7 +11,9 @@
 	<body bgcolor="black">
 		<script src="ld28/ld28.nocache.js"></script>
         <script>
-            window.onkeypress = function(){ return false; };
+            window.onkeydown = function(e){
+              return e.keyCode != 32 && e.keyCode != 37 && e.keyCode != 38 && e.keyCode != 39 && e.keyCode != 40;
+            };
         </script>
 	</body>
 </html>
