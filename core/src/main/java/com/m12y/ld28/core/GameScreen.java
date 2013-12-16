@@ -69,7 +69,7 @@ public class GameScreen implements Screen {
         Array<Vector2> startingWaypoints = new Array<Vector2>(waypoints);
         startingWaypoints.shuffle();
 
-        int aiCount = 20;
+        int aiCount = 18;
         ais = new Array<AI>(false, aiCount);
 
         for (int i = 0; i < aiCount; i++) {

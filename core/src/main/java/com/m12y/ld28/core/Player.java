@@ -78,7 +78,10 @@ public class Player {
         String people = deathCount == 1 ? "person" : "people";
 
         if (closest.killer) {
-            Screen deaths = new TextScreen("Only " + deathCount + " " + people + " died!", closest.color, null);
+            Screen graphics = new TextScreen("\"I can't stand these awful graphics.\"", closest.color, null);
+            Screen says = new TextScreen("He says: ", closest.color, graphics);
+            Screen interrogate = new TextScreen("You interrogate the killer to learn his motive...", closest.color, says);
+            Screen deaths = new TextScreen("Only " + deathCount + " " + people + " died!", closest.color, interrogate);
             Screen winner = new TextScreen("You caught the killer!", closest.color, deaths);
 
             Clueless.instance.setScreen(winner);

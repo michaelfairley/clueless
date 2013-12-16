@@ -13,7 +13,7 @@ public class AI {
     static float velocity = 3.5f;
     private Vector2 waypoint;
     boolean killer;
-    static float seeRadius = 10f;
+    static float seeRadius = 9f;
     static float killRadius = 3f;
     boolean dead = false;
     static float halfSize = 0.5f;

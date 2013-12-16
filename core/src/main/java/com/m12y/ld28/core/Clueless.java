@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 public class Clueless extends Game {
     public static final int WIDTH = 1024;
-    public static final int HEIGHT = 768;
+    public static final int HEIGHT = 700;
 
     BitmapFont font;
 
@@ -27,20 +27,19 @@ public class Clueless extends Game {
 
         Screen game = new GameScreen();
         Screen go = new TextScreen("Party time!", null, game);
-        Screen reset = new TextScreen("Press R at any time to start over", null, go);
-        Screen space = new TextScreen("Press space to make the arrest", null, reset);
-        Screen arrows = new TextScreen("Move with WASD or the arrow keys", null, space);
-//        Screen graphics = new TextScreen("His motive?", Color.ORANGE, arrows);
-        Screen arrest = new TextScreen("And then arrest them", Color.GREEN, arrows);
+        Screen reset = new TextScreen("Press R at any time to start over.", null, go);
+        Screen space = new TextScreen("Press space to make the arrest.", null, reset);
+        Screen arrows = new TextScreen("Move with WASD or the arrow keys.", null, space);
+        Screen arrest = new TextScreen("And then arrest them.", Color.GREEN, arrows);
         Screen mission = new TextScreen("Your goal is to figure out who the killer is...", Color.WHITE, arrest);
-        Screen strike = new TextScreen("The killer will strike", Color.YELLOW, mission);
+        Screen strike = new TextScreen("The killer will strike.", Color.YELLOW, mission);
         Screen alone = new TextScreen("If left alone with another guest...", Color.MAGENTA, strike);
-        Screen killer = new TextScreen("Except that one of them is a killer", Color.CYAN, alone);
-        Screen nice = new TextScreen("They're nice enough", Color.RED, killer);
-        Screen goers = new TextScreen("These are some of the other partygoers", Color.BLUE, nice);
-        Screen cop = new TextScreen("You're a cop, and you're at a party", Color.BLACK, goers);
-        Screen you = new TextScreen("This is you", Color.BLACK, cop);
-        Screen hello = new TextScreen("Hello", null, you);
+        Screen killer = new TextScreen("Except that one of them is a killer.", Color.CYAN, alone);
+        Screen nice = new TextScreen("They're nice enough.", Color.RED, killer);
+        Screen goers = new TextScreen("These are some of the other partygoers.", Color.BLUE, nice);
+        Screen cop = new TextScreen("You're a cop, and you're at a party.", Color.BLACK, goers);
+        Screen you = new TextScreen("This is you.", Color.BLACK, cop);
+        Screen hello = new TextScreen("Hello.", null, you);
 
         setScreen(hello);
     }
