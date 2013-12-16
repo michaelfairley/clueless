@@ -113,10 +113,11 @@ public class AI {
     }
 
     public void render(ShapeRenderer shapeRenderer) {
+        Vector2 center = body.getPosition();
+
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(color);
-
-        Vector2 center = body.getPosition();
 
         shapeRenderer.rect(
                 center.x - halfSize,
@@ -124,7 +125,21 @@ public class AI {
                 halfSize * 2,
                 halfSize * 2
         );
-
         shapeRenderer.end();
+
+
+        if (dead) {
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(Color.BLACK);
+
+            shapeRenderer.x(
+                    center.x,
+                    center.y,
+                    halfSize
+            );
+
+            shapeRenderer.end();
+        }
+
     }
 }
