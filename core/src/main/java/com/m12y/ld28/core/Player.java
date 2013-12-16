@@ -83,7 +83,8 @@ public class Player {
 
             Clueless.instance.setScreen(winner);
         } else {
-            Screen deaths = new TextScreen(Integer.toString(deathCount) + " " + people + " died!", closest.color, null);
+            Screen more = new TextScreen("And more surely will with the killer on the loose.", closest.color, null);
+            Screen deaths = new TextScreen(Integer.toString(deathCount) + " " + people + " died!", closest.color, more);
             Screen wrong = new TextScreen("You got the wrong guy!", closest.color, deaths);
             Clueless.instance.setScreen(wrong);
         }
